@@ -5,17 +5,23 @@
 {% endblock %}
 
 {% block body %}
-<div>
-    <h1>Online Shop Home Page</h1>
-    <p>Find your product here</p>
+<div class="min-h-screen bg-gray-100 dark:bg-neutral-900 px-4 py-10">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">🛒 Online Shop</h1>
+    <p class="mb-6 text-gray-600 dark:text-neutral-400">Find your product here</p>
 
-    {% for item in data %}
-    <div>
-        <p>{{ item.title }}</p>
-        <p>{{ item.description }}</p>
-        <p>{{ item.price }}</p>
-        <a href="/buy/{{ item.id }}">BUY</a>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for item in data %}
+      <div class="border border-gray-200 dark:border-neutral-700 p-4 rounded-lg shadow bg-white dark:bg-neutral-800">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ item.title }}</h2>
+        <p class="text-gray-600 dark:text-neutral-400 mb-2">{{ item.description }}</p>
+        <p class="text-green-600 dark:text-green-400 font-bold mb-2">${{ item.price }}</p>
+        <a href="/buy/{{ item.id }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          Buy
+        </a>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
+  </div>
 </div>
 {% endblock %}
