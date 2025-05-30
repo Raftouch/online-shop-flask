@@ -14,6 +14,9 @@ class Item(db.Model):
     description = db.Column(db.Text, nullable=False)
     isAvailable = db.Column(db.Boolean, default=True)
 
+    # def __repr__(self):
+    #     return self.title
+
 
 with app.app_context():
     db.create_all()
@@ -21,7 +24,8 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    items = Item.query.order_by(Item.title).all()
+    return render_template('home.html', data=items)
 
 
 @app.route('/about')
