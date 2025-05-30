@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from cloudipsp import Api, Checkout
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
@@ -31,6 +33,26 @@ def home():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/buy/<int:id>')
+def buy(id):
+    item = Item.query.get(id)
+    if not item:
+        return "Item not found", 404
+
+    try:
+        api = Api(merchant_id=1396424,
+                secret_key='test')
+        checkout = Checkout(api=api)
+        data = {
+            "currency": "USD",
+            "amount": str(item.price * 100)
+        }
+        url = checkout.url(data).get('checkout_url')
+        return redirect(url)
+    except Exception as e:
+        return f"Error: {e}", 500
 
 
 @app.route('/create', methods=['GET', 'POST'])
